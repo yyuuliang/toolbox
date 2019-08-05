@@ -150,7 +150,29 @@ def view_tfrecord():
                 print(parsed_record['image/object/bbox/ymin'].values)
 
 
+# Reading a TFRecord file using TF.python_io
+
+def view_tfrecord_io():
+        # create a python_io reader
+        cwd = os.getcwd()
+        file_path = os.path.join(cwd, 'tfrecord-images/train.record')
+        record_iterator = tf.python_io.tf_record_iterator(path=file_path)
+        idx = 0
+        for string_record in record_iterator:
+                print('image: ', idx)
+                idx = idx +1
+                
+                example = tf.train.Example()
+                example.ParseFromString(string_record)
+                print(example.features.feature['image/shape'])
+                print(example.features.feature['image/object/class/name'])
+                print(example.features.feature['image/object/class/id'])
+                print(example.features.feature['image/object/bbox/xmin'])
+                print(example.features.feature['image/object/bbox/ymin'])
+
+
 
 if __name__ == '__main__':
-        create_tf_record()
-        view_tfrecord()
+        # create_tf_record()
+        # view_tfrecord()
+        # view_tfrecord_io()
