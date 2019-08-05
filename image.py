@@ -4,7 +4,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 import matplotlib.patches as patches
+import os
 
+import imageio
+import imgaug as ia
+from imgaug import augmenters as iaa 
+from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 
 """
 Perspective transformation
@@ -58,7 +63,40 @@ def draw_BB():
     ax.add_patch(rect)
     plt.show()
 
+"""
+Image Augumention
+"""
+
+def augument(impath):
+    ia.seed(1)
+
+    image = imageio.imread(impath)
+
+    bbs = BoundingBoxesOnImage([
+        BoundingBox(x1=170,y1=130,x2=252,y2=248,label='18'),
+        BoundingBox(x1=100,y1=154,x2=120,y2=175,label='1')
+
+    ], shape=image.shape)
+
+    ia.imshow(bbs.draw_on_image(image, size=2))
+
+    # apply augumentation
+    #  We choose a simple contrast augmentation (affects only the image) and an affine transformation (affects image and bounding boxes).
+    seq = iaa.Sequential([
+        iaa.GammaContrast(1.5),
+        iaa.Affine(translate_percent={"x": 0.1}, scale=0.8)
+    ])
+
+    image_aug, bbs_aug = seq(image=image, bounding_boxes=bbs)
+    ia.imshow(bbs_aug.draw_on_image(image_aug, size=2))
+
+    #  we apply an affine transformation consisting only of rotation.
+    image_aug, bbs_aug = iaa.Affine(rotate=50)(image=image, bounding_boxes=bbs)
+    ia.imshow(bbs_aug.draw_on_image(image_aug))
+
 
 if __name__ == '__main__':
-    impath = '/home/yuhuang/whitebase/pythontest/stops/src.jpg'
-    perspectiveTransformTest(impath)
+    cwd = os.getcwd()
+    impath = os.path.join(cwd,'stops/src.jpg')
+    # perspectiveTransformTest(impath)
+    augument(impath)

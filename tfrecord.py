@@ -1,5 +1,6 @@
 """
 Example of how to create and read tfrecord
+See more here: https://www.tensorflow.org/tutorials/load_data/tf_records
 """
 
 import hashlib

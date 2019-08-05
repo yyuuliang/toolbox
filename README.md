@@ -11,6 +11,7 @@ Toolbox is a collection of my daily use python scripts.
 - image.py  
   - Perspective transformation
   - Draw bounding box
+  - Image Augumention using imgaug
 - tfrecord.py  
   - Create TFRecords
   - Read TFRecords
