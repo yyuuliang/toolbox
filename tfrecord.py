@@ -114,7 +114,8 @@ def view_tfrecord():
         tf.enable_eager_execution()
         cwd = os.getcwd()
 
-        file_path = os.path.join(cwd, 'tfrecord-images/train.record')
+        # file_path = os.path.join(cwd, 'tfrecord-images/train.record')
+        file_path = '/home/yuhuang/singitlab/cameraprojects/traffic-sign-recognition/dataset/lisa/mytfrecord/train.record'
         filenames = [file_path]
         raw_dataset = tf.data.TFRecordDataset(filenames)
 
@@ -146,9 +147,9 @@ def view_tfrecord():
                 idx = idx +1
                 print(parsed_record['image/shape'])
                 print(parsed_record['image/object/class/name'].values)
-                print(parsed_record['image/object/class/id'].values)
-                print(parsed_record['image/object/bbox/xmin'].values)
-                print(parsed_record['image/object/bbox/ymin'].values)
+                # print(parsed_record['image/object/class/id'].values)
+                # print(parsed_record['image/object/bbox/xmin'].values)
+                # print(parsed_record['image/object/bbox/ymin'].values)
 
 
 # Reading a TFRecord file using TF.python_io
@@ -156,24 +157,26 @@ def view_tfrecord():
 def view_tfrecord_io():
         # create a python_io reader
         cwd = os.getcwd()
-        file_path = os.path.join(cwd, 'tfrecord-images/train.record')
+        # file_path = os.path.join(cwd, 'tfrecord-images/train.record')
+        file_path = '/home/yuhuang/singitlab/cameraprojects/traffic-sign-recognition/dataset/lisa/mytfrecord/train.record'
         record_iterator = tf.python_io.tf_record_iterator(path=file_path)
         idx = 0
         for string_record in record_iterator:
-                print('image: ', idx)
                 idx = idx +1
-                
-                example = tf.train.Example()
-                example.ParseFromString(string_record)
-                print(example.features.feature['image/shape'])
-                print(example.features.feature['image/object/class/name'])
-                print(example.features.feature['image/object/class/id'])
-                print(example.features.feature['image/object/bbox/xmin'])
-                print(example.features.feature['image/object/bbox/ymin'])
+                if idx >4300 and idx < 4310:
+                        print('image: ', idx)
+
+                        example = tf.train.Example()
+                        example.ParseFromString(string_record)
+                        print(example.features.feature['image/filename'])
+                        print(example.features.feature['image/width'])
+                        print(example.features.feature['image/height'])
+                        # print(example.features.feature['image/object/bbox/xmin'])
+                        # print(example.features.feature['image/object/bbox/ymin'])
 
 
 
 if __name__ == '__main__':
         # create_tf_record()
         # view_tfrecord()
-        # view_tfrecord_io()
+        view_tfrecord_io()

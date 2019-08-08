@@ -95,8 +95,27 @@ def augument(impath):
     ia.imshow(bbs_aug.draw_on_image(image_aug))
 
 
+def aug_resize(data_path):
+    num_total = 8877
+    imglist = ['00800.jpg', '04000.jpg','08000.jpg']
+    idx = 0
+
+    for i in range(3):
+        fname = imglist[i]
+        imgpath = os.path.join(data_path, fname)
+        print(imgpath)
+        # we have to resize all the images to same size, along with the bounding boxes
+    print('all: ', idx)
+
+
 if __name__ == '__main__':
     cwd = os.getcwd()
-    impath = os.path.join(cwd,'stops/src.jpg')
+    # impath = os.path.join(cwd,'stops/src.jpg')
     # perspectiveTransformTest(impath)
-    augument(impath)
+    # augument(impath)
+
+    data_path = 'tfrecord-images/training_data'
+    aug_resize(data_path)
+
+    # imgpath = '/home/yuhuang/singitlab/cameraprojects/traffic-sign-recognition/test-images/04644.jpg'
+    # crop(imgpath)
